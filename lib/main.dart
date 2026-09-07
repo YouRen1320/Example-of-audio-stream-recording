@@ -1,6 +1,4 @@
 // 导入Flutter基础包和录音库
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:record/record.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -31,7 +29,7 @@ class AudioRecorderPage extends StatefulWidget {
   const AudioRecorderPage({super.key});
 
   @override
-  _AudioRecorderPageState createState() => _AudioRecorderPageState();
+  State<AudioRecorderPage> createState() => _AudioRecorderPageState();
 }
 
 // 录音页面状态管理类

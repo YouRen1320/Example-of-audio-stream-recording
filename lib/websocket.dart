@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 import 'dart:typed_data';
 import 'package:uuid/uuid.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
@@ -92,8 +91,6 @@ class SpeechRecognizer {
   Future<IOWebSocketChannel> _connectWebSocket() async {
     try {
       print('正在连接WebSocket...');
-      print('使用的API Key长度: ${apiKey.length}'); // 打印API Key长度以验证是否存在
-
       final uri = Uri.parse(_url);
 
       final channel = IOWebSocketChannel.connect(
@@ -152,7 +149,6 @@ class SpeechRecognizer {
     Function(String) onError,
   ) {
     try {
-      print('收到WebSocket消息: $data');
       final message = jsonDecode(data);
       final header = message['header'];
 
@@ -165,7 +161,7 @@ class SpeechRecognizer {
           break;
         case 'result-generated':
           final text = message['payload']['output']['sentence']['text'] ?? '';
-          print('收到识别结果: $text');
+          // 识别文本可能包含个人信息，只通过回调交给界面，不写入调试日志。
           onResult(text);
           break;
         case 'task-finished':
@@ -182,7 +178,6 @@ class SpeechRecognizer {
           break;
         default:
           print('未知事件: ${header['event']}');
-          print('完整消息内容: $message');
       }
     } catch (e) {
       print('消息处理错误: $e');
@@ -217,9 +212,7 @@ class SpeechRecognizer {
           'task_id': _taskId,
           'streaming': 'duplex',
         },
-        'payload': {
-          'input': {},
-        },
+        'payload': {'input': {}},
       });
 
       print('发送任务结束指令');

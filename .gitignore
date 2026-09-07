@@ -33,6 +33,9 @@ migrate_working_dir/
 .pub/
 /build/
 
+# 本地阿里云百炼凭据，不提交到 Git。
+.env
+
 # Symbolication related
 app.*.symbols
 
