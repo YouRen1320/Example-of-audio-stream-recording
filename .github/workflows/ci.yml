@@ -1,0 +1,29 @@
+name: 持续集成
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  flutter:
+    name: 静态分析与测试
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出源码
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: 配置 Flutter（stable）
+        uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
+        with:
+          channel: stable
+      - name: 安装依赖
+        run: flutter pub get
+      - name: 静态分析
+        run: flutter analyze
+      - name: 测试
+        run: flutter test
