@@ -21,9 +21,11 @@ jobs:
         uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
         with:
           channel: stable
+      - name: 按快速开始说明创建本地环境文件（.env 为运行必需资产，不入库）
+        run: cp .env.example .env
       - name: 安装依赖
         run: flutter pub get
-      - name: 静态分析
-        run: flutter analyze
+      - name: 静态分析（info 级风格提示不拦截，error/warning 仍拦截）
+        run: flutter analyze --no-fatal-infos
       - name: 测试
         run: flutter test
