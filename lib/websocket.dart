@@ -185,24 +185,6 @@ class SpeechRecognizer {
     }
   }
 
-  /// 添加重连机制
-  Future<void> _reconnect() async {
-    int retryCount = 0;
-    const maxRetries = 3;
-
-    while (retryCount < maxRetries) {
-      try {
-        _channel = await _connectWebSocket();
-        _sendRunTask(_channel!);
-        return;
-      } catch (e) {
-        retryCount++;
-        await Future.delayed(Duration(seconds: retryCount));
-      }
-    }
-    throw Exception('重连失败');
-  }
-
   /// 发送任务结束指令
   void _sendFinishTask() {
     if (_channel != null && _taskStarted && !_taskFinishSent) {
